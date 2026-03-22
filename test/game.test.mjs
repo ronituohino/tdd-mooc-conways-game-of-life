@@ -45,7 +45,43 @@ describe("Game respects rule", () => {
       `),
     );
   });
-  test("2: Any live cell with two or three live neighbours lives on to the next generation.", () => {});
-  test("3: Any live cell with more than three live neighbours dies, as if by overpopulation.", () => {});
+  test("2: Any live cell with two or three live neighbours lives on to the next generation.", () => {
+    const game = new Game(
+      new Pattern(
+        `..x
+         .xx
+         ...`,
+        3,
+        3,
+      ),
+    );
+    game.tick();
+    expect(cleanString(game.toString())).to.equal(
+      cleanString(`
+        ..x
+        .xx
+        ...
+      `),
+    );
+  });
+  test("3: Any live cell with more than three live neighbours dies, as if by overpopulation.", () => {
+    const game = new Game(
+      new Pattern(
+        `.xx
+         .xx
+         ..x`,
+        3,
+        3,
+      ),
+    );
+    game.tick();
+    expect(cleanString(game.toString())).to.equal(
+      cleanString(`
+        .xx
+        ...
+        ..x
+      `),
+    );
+  });
   test("4: Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.", () => {});
 });

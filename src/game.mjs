@@ -67,8 +67,16 @@ export class Game {
     for (let y = 0; y < this.sizeY; y++) {
       for (let x = 0; x < this.sizeX; x++) {
         const cell = this.getCell(x, y);
-        if (cell === "x" && this.getAmountNeighbors(x, y) < 2) {
-          cellsToDie.push([x, y]);
+        const neighbors = this.getAmountNeighbors(x, y);
+        if (cell === "x") {
+          // Underpopulation
+          if (neighbors < 2) {
+            cellsToDie.push([x, y]);
+          }
+          // Overpopulation
+          if (neighbors > 3) {
+            cellsToDie.push([x, y]);
+          }
         }
       }
     }
