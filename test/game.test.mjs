@@ -106,3 +106,25 @@ describe("Game respects rule", () => {
     );
   });
 });
+
+describe("Game simulates", () => {
+  test("BLINKER correctly", () => {
+    const game = new Game(Pattern.BLINKER);
+    game.tick();
+    expect(cleanString(game.toString())).to.equal(
+      cleanString(`
+        ..x..
+        ..x..
+        ..x..
+      `),
+    );
+    game.tick();
+    expect(cleanString(game.toString())).to.equal(
+      cleanString(`
+        .....
+        .xxx.
+        .....
+      `),
+    );
+  });
+});
