@@ -58,7 +58,7 @@ describe("Game respects rule", () => {
     game.tick();
     expect(cleanString(game.toString())).to.equal(
       cleanString(`
-        ..x
+        .xx
         .xx
         ...
       `),
@@ -79,9 +79,27 @@ describe("Game respects rule", () => {
       cleanString(`
         .xx
         ...
-        ..x
+        .xx
       `),
     );
   });
-  test("4: Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.", () => {});
+  test("4: Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.", () => {
+    const game = new Game(
+      new Pattern(
+        `.x.
+         ..x
+         ..x`,
+        3,
+        3,
+      ),
+    );
+    game.tick();
+    expect(cleanString(game.toString())).to.equal(
+      cleanString(`
+        ...
+        .xx
+        ...
+      `),
+    );
+  });
 });

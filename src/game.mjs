@@ -64,6 +64,7 @@ export class Game {
 
   tick() {
     let cellsToDie = [];
+    let cellsToBorn = [];
     for (let y = 0; y < this.sizeY; y++) {
       for (let x = 0; x < this.sizeX; x++) {
         const cell = this.getCell(x, y);
@@ -77,6 +78,11 @@ export class Game {
           if (neighbors > 3) {
             cellsToDie.push([x, y]);
           }
+        } else {
+          // Reproduction
+          if (neighbors === 3) {
+            cellsToBorn.push([x, y]);
+          }
         }
       }
     }
@@ -84,6 +90,10 @@ export class Game {
     for (let c = 0; c < cellsToDie.length; c++) {
       const [x, y] = cellsToDie[c];
       this.state[y * this.sizeX + x] = ".";
+    }
+    for (let c = 0; c < cellsToBorn.length; c++) {
+      const [x, y] = cellsToBorn[c];
+      this.state[y * this.sizeX + x] = "x";
     }
   }
 }
