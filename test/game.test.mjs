@@ -1,6 +1,7 @@
 import { describe, test } from "vitest";
 import { expect } from "chai";
 import { Game } from "../src/game.mjs";
+import { cleanString } from "../src/utils.mjs";
 
 const GLIDER = `
 .x.
@@ -18,12 +19,14 @@ describe("Game", () => {
   test("can be ticked forward", () => {
     const game = new Game(GLIDER);
     game.tick();
-    expect(game.toString()).to.equal(`
+    expect(cleanString(game.toString())).to.equal(
+      cleanString(`
         ...
         x.x
         .xx
         .x.
-      `);
+      `),
+    );
   });
 });
 
