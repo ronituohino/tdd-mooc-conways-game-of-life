@@ -24,4 +24,5 @@ export class Pattern {
     3,
     3,
   );
+  static BLINKER = new Pattern("xxx", 3, 1);
 }

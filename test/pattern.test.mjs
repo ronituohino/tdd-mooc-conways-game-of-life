@@ -13,4 +13,7 @@ describe("Pattern", () => {
   test("contains a GLIDER pattern", () => {
     expect(Pattern.GLIDER.toCharacters()).to.equal(".x...xxxx");
   });
+  test("conains a BLINKER pattern", () => {
+    expect(Pattern.BLINKER.toCharacters()).to.equal("xxx");
+  });
 });
