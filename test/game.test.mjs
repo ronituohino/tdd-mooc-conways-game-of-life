@@ -11,15 +11,16 @@ describe("Game", () => {
   test("can be seeded with a pattern", () => {
     expect(new Game(Pattern.GLIDER).toString()).to.equal(Pattern.GLIDER.toCharacters());
   });
-  test.skip("can be ticked forward", () => {
-    const game = new Game(GLIDER);
+  test("can be ticked forward", () => {
+    const game = new Game(Pattern.GLIDER);
     game.tick();
     expect(cleanString(game.toString())).to.equal(
       cleanString(`
-        ...
-        x.x
-        .xx
-        .x.
+        .....
+        .....
+        .x.x.
+        ..xx.
+        ..x..
       `),
     );
   });
@@ -77,9 +78,11 @@ describe("Game respects rule", () => {
     game.tick();
     expect(cleanString(game.toString())).to.equal(
       cleanString(`
-        .xx
-        ...
-        .xx
+        .....
+        ..xx.
+        ....x
+        ..xx.
+        .....
       `),
     );
   });
