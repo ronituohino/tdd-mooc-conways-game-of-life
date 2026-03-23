@@ -9,7 +9,7 @@ export class RLE {
   static toFile(newFilePath, state, width, height) {
     let fileContents = "";
     fileContents += `x = ${width}, y = ${height}\n`;
-    fileContents += RLE.encode(state);
+    fileContents += RLE.encode(state, width, height);
 
     writeFileSync(newFilePath, fileContents, { encoding: "utf8" });
   }
