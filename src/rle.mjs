@@ -1,10 +1,17 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { Pattern } from "./pattern.mjs";
 import { cleanString } from "./utils.mjs";
 
 export class RLE {
   static fromFile(path) {
     return new RLE(path);
+  }
+  static toFile(newFilePath, state, width, height) {
+    let fileContents = "";
+    fileContents += `x = ${width}, y = ${height}\n`;
+    fileContents += RLE.encode(state);
+
+    writeFileSync(newFilePath, fileContents, { encoding: "utf8" });
   }
   static decode(rleData, width, height) {
     const characterSets = [];

@@ -2,6 +2,7 @@ import { beforeEach, describe, test } from "vitest";
 import { expect } from "chai";
 import { RLE } from "../src/rle.mjs";
 import { cleanString } from "../src/utils.mjs";
+import { readFileSync, unlink } from "node:fs";
 
 describe("RLE decoding", () => {
   test("works on empty pattern", () => {
@@ -133,5 +134,31 @@ describe("RLE", () => {
         ............xx......................
       `),
     );
+  });
+  test("can save a state to a .rle file", () => {
+    const newFilePath = "./test/tmp/output.rle";
+
+    RLE.toFile(
+      newFilePath,
+      cleanString(`
+        ........................x...........
+        ......................x.x...........
+        ............xx......xx............xx
+        ...........x...x....xx............xx
+        xx........x.....x...xx..............
+        xx........x...x.xx....x.x...........
+        ..........x.....x.......x...........
+        ...........x...x....................
+        ............xx......................
+      `),
+      36,
+      9,
+    );
+
+    const newFile = readFileSync(newFilePath, { encoding: "utf8" });
+    expect(newFile.startsWith("x = 36, y = 9\n24b")).to.be.true;
+    unlink(newFilePath, (err) => {
+      if (err) throw err;
+    });
   });
 });
