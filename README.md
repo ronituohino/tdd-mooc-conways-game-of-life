@@ -1,6 +1,18 @@
 # Conway's Game of Life
 
-...
+Run with
+
+```
+node src/main.mjs --input=<path> --output=<path> --n=<int>
+```
+
+where
+
+```
+--input is the `.rle` input path
+--output is the `.rle` output path
+--n is the amount of generations to simulate
+```
 
 ## Prerequisites
 
