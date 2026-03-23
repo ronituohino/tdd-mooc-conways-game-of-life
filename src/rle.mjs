@@ -44,7 +44,8 @@ export class RLE {
           continue;
         case "!":
           if (lineCount < height) {
-            for (let i = 0; i < height - lineCount; i++) {
+            const diff = height - lineCount;
+            for (let i = 0; i < diff; i++) {
               characterSets.push(".".repeat(width - lineCharacterCount));
               lineCharacterCount = 0;
               lineCount += 1;
