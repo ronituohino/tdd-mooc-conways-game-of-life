@@ -61,35 +61,56 @@ export class RLE {
   static encode(state, width, height) {
     const characters = cleanString(state);
 
-    const result = [];
+    let result = [];
     let runCount = 0;
     let lastCharacter = undefined;
     for (let c = 0; c < characters.length; c++) {
       const character = characters[c];
       if (character === lastCharacter) {
         runCount += 1;
-        if (runCount === width) {
-          if (character !== ".") {
-            // end of line, start run count again
-            const symbol = `${runCount}o`;
-            result.push(symbol);
-            result.push("$");
-          }
-
-          runCount = 0;
-          lastCharacter = undefined;
-        }
-        continue;
       } else {
         // apply previous run count
+        if (lastCharacter !== undefined) {
+          const symbol = `${runCount > 1 ? runCount : ""}${lastCharacter === "x" ? "o" : "b"}`;
+          result.push(symbol);
+        }
 
         runCount = 1;
         lastCharacter = character;
       }
+
+      if (c > 0 && (c + 1) % width === 0) {
+        // end of line, start run count again
+        if (character === "x") {
+          const symbol = `${runCount}o`;
+          result.push(symbol);
+        }
+        result.push("$");
+
+        runCount = 0;
+        lastCharacter = undefined;
+      }
     }
 
+    // compress end of line chars
     result.push("!");
-    return result.join("");
+    const encoded = result.join("");
+    let runCountEOL = 0;
+    const final = [];
+    for (let c = 0; c < encoded.length; c++) {
+      const character = encoded[c];
+      if (character === "$") {
+        runCountEOL += 1;
+      } else {
+        if (runCountEOL > 1 && runCountEOL < height) {
+          final.push(`${runCountEOL}\$`);
+        }
+        final.push(character);
+        runCountEOL = 0;
+      }
+    }
+
+    return final.join("");
   }
 
   contents;

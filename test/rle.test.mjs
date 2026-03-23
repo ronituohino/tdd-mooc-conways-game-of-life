@@ -14,7 +14,7 @@ describe("RLE decoding", () => {
     );
   });
   test("works on simple pattern", () => {
-    expect(RLE.decode("2obo$2$1o2$!", 6, 6)).to.deep.equal(
+    expect(RLE.decode("2obo3$o3$!", 6, 6)).to.deep.equal(
       cleanString(`
         xx.x..
         ......
@@ -57,7 +57,7 @@ describe("RLE encoding", () => {
       ),
     ).to.equal("!");
   });
-  test.skip("works on simple pattern", () => {
+  test("works on simple pattern", () => {
     expect(
       RLE.encode(
         cleanString(`
@@ -71,7 +71,7 @@ describe("RLE encoding", () => {
         6,
         6,
       ),
-    ).to.equal("2obo$2$1o2$!");
+    ).to.equal("2obo3$o3$!");
   });
   test.skip("works on more complex pattern", () => {
     expect(
