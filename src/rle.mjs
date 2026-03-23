@@ -102,7 +102,9 @@ export class RLE {
       if (character === "$") {
         runCountEOL += 1;
       } else {
-        if (runCountEOL > 1 && runCountEOL < height) {
+        if (runCountEOL === 1) {
+          final.push("$");
+        } else if (runCountEOL > 1 && runCountEOL < height) {
           final.push(`${runCountEOL}\$`);
         }
         final.push(character);

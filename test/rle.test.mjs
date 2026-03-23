@@ -73,7 +73,7 @@ describe("RLE encoding", () => {
       ),
     ).to.equal("2obo3$o3$!");
   });
-  test.skip("works on more complex pattern", () => {
+  test("works on more complex pattern", () => {
     expect(
       RLE.encode(
         cleanString(`
@@ -91,7 +91,26 @@ describe("RLE encoding", () => {
         10,
         10,
       ),
-    ).to.equal("$5bo2bo$2bo3bob$8b2o$2o2$5bo!");
+    ).to.equal("$5bo2bo$2bo3bo$8b2o$2o2$5bo4$!");
+  });
+  test("works on gosper glider gun", () => {
+    expect(
+      RLE.encode(
+        cleanString(`
+        ........................x...........
+        ......................x.x...........
+        ............xx......xx............xx
+        ...........x...x....xx............xx
+        xx........x.....x...xx..............
+        xx........x...x.xx....x.x...........
+        ..........x.....x.......x...........
+        ...........x...x....................
+        ............xx......................
+      `),
+        36,
+        9,
+      ),
+    ).to.equal("24bo$22bobo$12b2o6b2o12b2o$11bo3bo4b2o12b2o$2o8bo5bo3b2o$2o8bo3bob2o4bobo$10bo5bo7bo$11bo3bo$12b2o$!");
   });
 });
 
