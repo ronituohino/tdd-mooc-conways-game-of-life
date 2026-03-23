@@ -43,6 +43,58 @@ describe("RLE decoding", () => {
   });
 });
 
+describe("RLE encoding", () => {
+  test("works on empty pattern", () => {
+    expect(
+      RLE.encode(
+        cleanString(`
+        ...
+        ...
+        ...
+      `),
+        3,
+        3,
+      ),
+    ).to.equal("!");
+  });
+  test.skip("works on simple pattern", () => {
+    expect(
+      RLE.encode(
+        cleanString(`
+        xx.x..
+        ......
+        ......
+        x.....
+        ......
+        ......
+      `),
+        6,
+        6,
+      ),
+    ).to.equal("2obo$2$1o2$!");
+  });
+  test.skip("works on more complex pattern", () => {
+    expect(
+      RLE.encode(
+        cleanString(`
+        ..........
+        .....x..x.
+        ..x...x...
+        ........xx
+        xx........
+        ..........
+        .....x....
+        ..........
+        ..........
+        ..........
+      `),
+        10,
+        10,
+      ),
+    ).to.equal("$5bo2bo$2bo3bob$8b2o$2o2$5bo!");
+  });
+});
+
 describe("RLE", () => {
   test("can read a .rle file", () => {
     expect(RLE.fromFile("./test/shapes/gosper_glider_gun.rle").toString().startsWith("#N Gosper glider gun")).to.be

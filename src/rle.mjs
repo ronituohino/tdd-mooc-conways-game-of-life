@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { Pattern } from "./pattern.mjs";
+import { cleanString } from "./utils.mjs";
 
 export class RLE {
   static fromFile(path) {
@@ -55,6 +56,40 @@ export class RLE {
     }
 
     return characterSets.join("");
+  }
+
+  static encode(state, width, height) {
+    const characters = cleanString(state);
+
+    const result = [];
+    let runCount = 0;
+    let lastCharacter = undefined;
+    for (let c = 0; c < characters.length; c++) {
+      const character = characters[c];
+      if (character === lastCharacter) {
+        runCount += 1;
+        if (runCount === width) {
+          if (character !== ".") {
+            // end of line, start run count again
+            const symbol = `${runCount}o`;
+            result.push(symbol);
+            result.push("$");
+          }
+
+          runCount = 0;
+          lastCharacter = undefined;
+        }
+        continue;
+      } else {
+        // apply previous run count
+
+        runCount = 1;
+        lastCharacter = character;
+      }
+    }
+
+    result.push("!");
+    return result.join("");
   }
 
   contents;
