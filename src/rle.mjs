@@ -17,16 +17,9 @@ export class RLE {
       const character = rleData[c];
 
       switch (character) {
-        case "b":
-          // dead cell
-          characterSets.push(".".repeat(runCountParsed));
-          currentLineCharacterCount += runCountParsed;
-          runCountParsed = 1;
-          runCountCharacters = [];
-          continue;
-        case "o":
-          // alive cell
-          characterSets.push("x".repeat(runCountParsed));
+        case "b": // dead cell
+        case "o": // alive cell
+          characterSets.push((character === "b" ? "." : "x").repeat(runCountParsed));
           currentLineCharacterCount += runCountParsed;
           runCountParsed = 1;
           runCountCharacters = [];
@@ -40,7 +33,6 @@ export class RLE {
           }
           runCountParsed = 1;
           runCountCharacters = [];
-
           continue;
         case "!":
           if (lineCount < height) {
@@ -74,8 +66,8 @@ export class RLE {
     return this.contents;
   }
   toPattern() {
-    let sizeX;
-    let sizeY;
+    let width;
+    let height;
 
     const rleData = [];
     const lines = this.contents.split("\n");
@@ -92,8 +84,8 @@ export class RLE {
           parsedHeaders[key.trim()] = parseInt(value.trim()) || value.trim();
         });
 
-        sizeX = parsedHeaders.x;
-        sizeY = parsedHeaders.y;
+        width = parsedHeaders.x;
+        height = parsedHeaders.y;
         continue;
       }
 
@@ -101,6 +93,6 @@ export class RLE {
       rleData.push(line);
     }
 
-    return new Pattern(RLE.decode(rleData.join(""), sizeX, sizeY), sizeX, sizeY);
+    return new Pattern(RLE.decode(rleData.join(""), width, height), width, height);
   }
 }
