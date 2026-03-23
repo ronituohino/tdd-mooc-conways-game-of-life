@@ -4,15 +4,24 @@ import { RLE } from "../src/rle.mjs";
 import { cleanString } from "../src/utils.mjs";
 
 describe("RLE", () => {
-  let rle;
-  beforeEach(() => {
-    rle = RLE.fromFile("./test/shapes/gosper_glider_gun.rle");
-  });
   test("can read a .rle file", () => {
-    expect(rle.toString().startsWith("#N Gosper glider gun")).to.be.true;
+    expect(RLE.fromFile("./test/shapes/gosper_glider_gun.rle").toString().startsWith("#N Gosper glider gun")).to.be
+      .true;
+  });
+  test("can decode simple pattern", () => {
+    expect(RLE.decode("2obo$2$1o2$!", 6, 6)).to.deep.equal(
+      cleanString(`
+        xx.x..
+        ......
+        ......
+        x.....
+        ......
+        ......
+      `),
+    );
   });
   test.skip("can produce a Pattern", () => {
-    expect(rle.toPattern().characters).to.deep.equal(
+    expect(RLE.fromFile("./test/shapes/gosper_glider_gun.rle").toPattern().characters).to.deep.equal(
       cleanString(`
         ........................x...........
         ......................x.x...........

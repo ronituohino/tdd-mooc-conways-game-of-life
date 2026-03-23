@@ -5,6 +5,64 @@ export class RLE {
   static fromFile(path) {
     return new RLE(path);
   }
+  static decode(rleData, width, height) {
+    const characterSets = [];
+
+    // Shape data
+    let runningCountChars = [];
+    let runningCount = 1;
+    let lineCharacterCount = 0;
+    let lineCount = 0;
+    for (let c = 0; c < rleData.length; c++) {
+      const character = rleData[c];
+
+      switch (character) {
+        case "b":
+          // dead cell
+          characterSets.push(".".repeat(runningCount));
+          lineCharacterCount += runningCount;
+          runningCount = 1;
+          runningCountChars = [];
+          continue;
+        case "o":
+          // alive cell
+          characterSets.push("x".repeat(runningCount));
+          lineCharacterCount += runningCount;
+          runningCount = 1;
+          runningCountChars = [];
+          continue;
+        case "$":
+          // new line
+          for (let i = 0; i < runningCount; i++) {
+            characterSets.push(".".repeat(width - lineCharacterCount));
+            lineCharacterCount = 0;
+            lineCount += 1;
+          }
+          runningCount = 1;
+          runningCountChars = [];
+
+          continue;
+        case "!":
+          if (lineCount < height) {
+            for (let i = 0; i < height - lineCount; i++) {
+              characterSets.push(".".repeat(width - lineCharacterCount));
+              lineCharacterCount = 0;
+              lineCount += 1;
+            }
+          }
+          break;
+        default:
+          // number
+          if (parseInt(character) !== NaN) {
+            runningCountChars.push(character);
+            runningCount = parseInt(runningCountChars.join(""));
+          }
+          continue;
+      }
+    }
+
+    return characterSets.join("");
+  }
 
   contents;
   constructor(path) {
@@ -36,50 +94,6 @@ export class RLE {
         sizeX = parsedHeaders.x;
         sizeY = parsedHeaders.y;
         continue;
-      }
-
-      // Shape data
-      let runningCountChars = [];
-      let runningCount = 1;
-      let lineCharacterCount = 0;
-      for (let c = 0; c < line.length; c++) {
-        const character = line[c];
-
-        switch (character) {
-          case "b":
-            // dead cell
-            characters.push(".".repeat(runningCount).split(""));
-            lineCharacterCount += runningCount;
-            runningCount = 1;
-            runningCountChars = [];
-            continue;
-          case "o":
-            // alive cell
-            characters.push("x".repeat(runningCount).split(""));
-            lineCharacterCount += runningCount;
-            runningCount = 1;
-            runningCountChars = [];
-            continue;
-          case "$":
-            // new line
-            for (let i = 0; i < runningCount; i++) {
-              characters.push(".".repeat(sizeX - lineCharacterCount).split(""));
-              lineCharacterCount = 0;
-            }
-            runningCount = 1;
-            runningCountChars = [];
-
-            continue;
-          case "!":
-            break;
-          default:
-            // number
-            if (parseInt(character) !== NaN) {
-              runningCountChars.push(character);
-              runningCount = parseInt(runningCountChars.join(""));
-            }
-            continue;
-        }
       }
     }
 
