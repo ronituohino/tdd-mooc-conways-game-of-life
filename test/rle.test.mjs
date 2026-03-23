@@ -3,12 +3,8 @@ import { expect } from "chai";
 import { RLE } from "../src/rle.mjs";
 import { cleanString } from "../src/utils.mjs";
 
-describe("RLE", () => {
-  test("can read a .rle file", () => {
-    expect(RLE.fromFile("./test/shapes/gosper_glider_gun.rle").toString().startsWith("#N Gosper glider gun")).to.be
-      .true;
-  });
-  test("can decode more empty pattern", () => {
+describe("RLE decoding", () => {
+  test("works on empty pattern", () => {
     expect(RLE.decode("!", 3, 3)).to.deep.equal(
       cleanString(`
         ...
@@ -17,7 +13,7 @@ describe("RLE", () => {
       `),
     );
   });
-  test("can decode simple pattern", () => {
+  test("works on simple pattern", () => {
     expect(RLE.decode("2obo$2$1o2$!", 6, 6)).to.deep.equal(
       cleanString(`
         xx.x..
@@ -29,7 +25,7 @@ describe("RLE", () => {
       `),
     );
   });
-  test.skip("can decode more complex pattern", () => {
+  test.skip("works on more complex pattern", () => {
     expect(RLE.decode("!", 10, 10)).to.deep.equal(
       cleanString(`
         ..........
@@ -44,6 +40,13 @@ describe("RLE", () => {
         ..........
       `),
     );
+  });
+});
+
+describe("RLE", () => {
+  test("can read a .rle file", () => {
+    expect(RLE.fromFile("./test/shapes/gosper_glider_gun.rle").toString().startsWith("#N Gosper glider gun")).to.be
+      .true;
   });
   test.skip("can produce a Pattern", () => {
     expect(RLE.fromFile("./test/shapes/gosper_glider_gun.rle").toPattern().characters).to.deep.equal(
