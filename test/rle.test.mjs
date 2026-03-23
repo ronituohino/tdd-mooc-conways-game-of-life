@@ -48,7 +48,7 @@ describe("RLE", () => {
     expect(RLE.fromFile("./test/shapes/gosper_glider_gun.rle").toString().startsWith("#N Gosper glider gun")).to.be
       .true;
   });
-  test.skip("can produce a Pattern", () => {
+  test("can produce a Pattern", () => {
     expect(RLE.fromFile("./test/shapes/gosper_glider_gun.rle").toPattern().characters).to.deep.equal(
       cleanString(`
         ........................x...........

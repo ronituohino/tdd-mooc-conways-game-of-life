@@ -76,8 +76,8 @@ export class RLE {
   toPattern() {
     let sizeX;
     let sizeY;
-    const characters = [];
 
+    const rleData = [];
     const lines = this.contents.split("\n");
     for (let l = 0; l < lines.length; l++) {
       const line = lines[l];
@@ -96,11 +96,11 @@ export class RLE {
         sizeY = parsedHeaders.y;
         continue;
       }
+
+      // RLE data
+      rleData.push(line);
     }
 
-    const finalString = [];
-    characters.forEach((part) => finalString.push(part.join("")));
-
-    return new Pattern(finalString.join(""), sizeX, sizeY);
+    return new Pattern(RLE.decode(rleData.join(""), sizeX, sizeY), sizeX, sizeY);
   }
 }
