@@ -1,7 +1,6 @@
 import { describe, test } from "vitest";
 import { expect } from "chai";
 import { Pattern } from "../src/pattern.mjs";
-import { cleanString } from "../src/utils.mjs";
 
 describe("Pattern", () => {
   test("is initialized empty", () => {
