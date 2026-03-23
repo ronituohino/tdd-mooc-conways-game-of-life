@@ -8,10 +8,10 @@ export class RLE {
   static decode(rleData, width, height) {
     const characterSets = [];
 
-    // Shape data
-    let runningCountChars = [];
-    let runningCount = 1;
-    let lineCharacterCount = 0;
+    let runCountCharacters = [];
+    let runCountParsed = 1;
+
+    let currentLineCharacterCount = 0;
     let lineCount = 0;
     for (let c = 0; c < rleData.length; c++) {
       const character = rleData[c];
@@ -19,35 +19,35 @@ export class RLE {
       switch (character) {
         case "b":
           // dead cell
-          characterSets.push(".".repeat(runningCount));
-          lineCharacterCount += runningCount;
-          runningCount = 1;
-          runningCountChars = [];
+          characterSets.push(".".repeat(runCountParsed));
+          currentLineCharacterCount += runCountParsed;
+          runCountParsed = 1;
+          runCountCharacters = [];
           continue;
         case "o":
           // alive cell
-          characterSets.push("x".repeat(runningCount));
-          lineCharacterCount += runningCount;
-          runningCount = 1;
-          runningCountChars = [];
+          characterSets.push("x".repeat(runCountParsed));
+          currentLineCharacterCount += runCountParsed;
+          runCountParsed = 1;
+          runCountCharacters = [];
           continue;
         case "$":
           // new line
-          for (let i = 0; i < runningCount; i++) {
-            characterSets.push(".".repeat(width - lineCharacterCount));
-            lineCharacterCount = 0;
+          for (let i = 0; i < runCountParsed; i++) {
+            characterSets.push(".".repeat(width - currentLineCharacterCount));
+            currentLineCharacterCount = 0;
             lineCount += 1;
           }
-          runningCount = 1;
-          runningCountChars = [];
+          runCountParsed = 1;
+          runCountCharacters = [];
 
           continue;
         case "!":
           if (lineCount < height) {
             const diff = height - lineCount;
             for (let i = 0; i < diff; i++) {
-              characterSets.push(".".repeat(width - lineCharacterCount));
-              lineCharacterCount = 0;
+              characterSets.push(".".repeat(width - currentLineCharacterCount));
+              currentLineCharacterCount = 0;
               lineCount += 1;
             }
           }
@@ -55,8 +55,8 @@ export class RLE {
         default:
           // number
           if (parseInt(character) !== NaN) {
-            runningCountChars.push(character);
-            runningCount = parseInt(runningCountChars.join(""));
+            runCountCharacters.push(character);
+            runCountParsed = parseInt(runCountCharacters.join(""));
           }
           continue;
       }
